@@ -12,7 +12,8 @@
 	var angularBasicAuth = angular.module(
 		'angularBasicAuth',
 		[
-			'LocalStorageModule'
+			'LocalStorageModule',
+			'base64'
 		]);
 
 	// Constants

@@ -20,6 +20,7 @@
   ],
   "dependencies": {
     "angular": "~1.2.18",
-    "angular-local-storage": "~0.0.5"
+    "angular-local-storage": "~0.0.5",
+    "angular-base64": "~2.0.2"
   }
 }
