@@ -16,7 +16,7 @@
 		]);
 
 	// Constants
-	var MS_PER_HOUR = 1000 * 60 * 60;
+	var MS_PER_MINUTE = 1000 * 60;
 
 	/**
 	* Difference between two dates in hours
@@ -24,9 +24,22 @@
 	* @param {Date} a First date
 	* @param {Date} b Second date
 	*/
-	function dateDiffInHours(earlier, later) {
-		return (later.getTime() - earlier.getTime()) / MS_PER_HOUR;
+	function dateDiffInMinutes(earlier, later) {
+		return (later.getTime() - earlier.getTime()) / MS_PER_MINUTE;
 	}
+
+	/**
+	 * Constants
+	 */
+	angularBasicAuth.constant('MODULE_VERSION', '0.0.0');
+
+	/**
+	 * Defaults
+	 */
+	angularBasicAuth.value('authDefaults', {
+		authenticateUrl: '/api/authenticate',
+		sessionMinutes: 180
+	});
 
 	/**
 	* HTTP Interceptor to add Authorization headers to all requests if the
@@ -85,7 +98,8 @@
 				'$q',
 				'$rootScope',
 				'$interval',
-				function ($log, localStorage, $base64, $q, $rootScope, $interval) {
+				'authDefaults',
+				function ($log, localStorage, $base64, $q, $rootScope, $interval, authDefaults) {
 
 					$log.debug('authService constructed');
 
@@ -140,7 +154,7 @@
 							return false;
 						}
 
-						return (dateDiffInHours(new Date(lastActivity), new Date()) < 24);
+						return (dateDiffInMinutes(new Date(lastActivity), new Date()) < authDefaults.sessionMinutes);
 					}
 
 					/**
@@ -232,7 +246,7 @@
 							var promise = deferred.promise;
 							var request = new XMLHttpRequest();
 							request.onload = processResponse;
-							request.open('GET','/api/authenticate');
+							request.open('GET', authDefaults.authenticateUrl);
 							request.setRequestHeader('Accept', 'application/json');
 							request.setRequestHeader('Authorization', getAuth());
 							request.send(null);
