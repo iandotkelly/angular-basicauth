@@ -6,6 +6,8 @@
 
 module.exports = function (grunt) {
 
+	require('load-grunt-tasks')(grunt);
+
 	// Project configuration.
 	grunt.initConfig({
 
@@ -16,17 +18,25 @@ module.exports = function (grunt) {
 					jshintrc: '.jshintrc'
 				},
 				src: [
-					'*.js'
+					'Gruntfile.js',
+					'angular-basicauth.js'
 				]
+			}
+		},
+
+		uglify: {
+			dist: {
+				files: {
+					'angular-basicauth.min.js': 'angular-basicauth.js'
+				}
 			}
 		}
 
 	});
 
-	// load the plugins required
-	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.registerTask('test', ['jshint']);
 	grunt.registerTask('lint', ['jshint']);
+	grunt.registerTask('minify', ['uglify']);
 
-	grunt.registerTask('default', ['jshint']);
+	grunt.registerTask('default', ['jshint', 'uglify']);
 };
