@@ -1,0 +1,286 @@
+/**
+ * Basic Authentication Module for AngularJs
+ *
+ * Copyright (C) Ian Kelly
+ * License: MIT
+ */
+
+(function() {
+
+	var angularBasicAuth = angular.module(
+		'angularBasicAuth',
+		[
+			'LocalStorageModule'
+		]);
+
+	// Constants
+	var MS_PER_HOUR = 1000 * 60 * 60;
+
+	/**
+	* Difference between two dates in hours
+	*
+	* @param {Date} a First date
+	* @param {Date} b Second date
+	*/
+	function dateDiffInHours(earlier, later) {
+		return (later.getTime() - earlier.getTime()) / MS_PER_HOUR;
+	}
+
+	/**
+	* HTTP Interceptor to add Authorization headers to all requests if the
+	* auth local storage property has been set
+	*/
+	huwa.factory('authInterceptor',
+		[
+			'$q',
+			'authService',
+			function ($q, authService) {
+
+				var authInterceptor = {
+
+					/**
+					* Request Interceptor
+					*
+					* Adds an authorization header, if and only if there
+					* is one found in the local storage
+					*/
+					request: function(config) {
+						config.headers['Authorization'] = authService.getAuth();
+						return config;
+					},
+
+					/**
+					* Error Interceptor
+					*
+					* Used to trap an authentication error
+					*/
+					responseError: function(rejection) {
+						// this is a failure to authenticate
+						// so inform the authenticaton service
+						if (rejection.status === 401) {
+							authService.handleAuthFailure();
+						}
+
+						return $q.reject(rejection);
+					}
+				};
+
+				return authInterceptor;
+			}
+		]);
+
+	/**
+	* Service to handle user authentication
+	*
+	* This is a singleton service, so we will instantiate this once in an iife
+	*/
+	(function() {
+		huwa.factory('authService',
+			[
+				'$log',
+				'localStorageService',
+				'$base64',
+				'$q',
+				'$rootScope',
+				'$interval',
+				function ($log, localStorage, $base64, $q, $rootScope, $interval) {
+
+					$log.debug('authService constructed');
+
+					var LS_USERNAME = 'username';
+					var LS_AUTHENTICATION = 'auth';
+					var LS_LASTACTIVITY = 'last-activity';
+
+					/**
+					* Logout and wipe the local storage
+					*/
+					function logout() {
+						$log.debug('logout event');
+						localStorage.remove(LS_AUTHENTICATION);
+						localStorage.remove(LS_LASTACTIVITY);
+						localStorage.remove(LS_USERNAME);
+						$rootScope.$emit('logout');
+					}
+
+					/**
+					* Set the user credentials
+					*
+					* @param {String} username Username
+					* @param {String} password Unencryped password
+					*/
+					function setCredentials(username, password) {
+						$log.debug('Setting credentials for user: ' + username);
+
+						localStorage.set(LS_USERNAME, username);
+
+						// set the value of the auth-header
+						localStorage.set(LS_AUTHENTICATION,
+							'Basic ' + $base64.encode(username + ':' + password));
+
+						recordActivity();
+					}
+
+					/**
+					* Record account activity
+					*/
+					function recordActivity() {
+						localStorage.set(LS_LASTACTIVITY, (new Date()).toString());
+					}
+
+					/**
+					* Is the login current
+					*/
+					function isCurrent() {
+						// retrieve the last activity of the account
+						var lastActivity = localStorage.get(LS_LASTACTIVITY) || '';
+
+						if (lastActivity === '') {
+							return false;
+						}
+
+						return (dateDiffInHours(new Date(lastActivity), new Date()) < 24);
+					}
+
+					/**
+					* Confirm the account is current
+					*/
+					function confirmCurrent() {
+						if (!isCurrent()) {
+							$log.debug('Authentication credentials missing or out of date');
+							logout();
+						}
+					}
+
+					/**
+					* Returns the current authentication header
+					*/
+					function getAuth() {
+						return localStorage.get(LS_AUTHENTICATION);
+					}
+
+					// we should work out whether we are current or not
+					confirmCurrent();
+
+					// set an inteval to do this regularly
+					$interval(confirmCurrent, 60000);
+
+					return {
+						/**
+						* Get any current authentication header
+						*/
+						getAuth: getAuth,
+
+						/**
+						* Handles logout
+						*/
+						logout: logout,
+
+						/**
+						* Record activity
+						*/
+						activity: recordActivity,
+
+						/**
+						* The current username
+						*
+						* @return {String} The current username
+						*/
+						username: function() {
+							confirmCurrent();
+							return localStorage.get(LS_USERNAME);
+						},
+
+						/**
+						* Handle an authentication failure
+						*/
+						handleAuthFailure: function() {
+							logout();
+							$rootScope.$emit('authentication-failure');
+						},
+
+						/**
+						* Handles login to the application
+						*
+						* @param  {String} username The username
+						* @param  {String} password The password
+						* @return {Object}          Promise for the transaction
+						*/
+						login: function(username, password) {
+							$log.debug('login event');
+
+							// record the credentials
+							setCredentials(username, password);
+
+							// don't use $http to avoid circular reference, so
+							// directly use XMLHttpRequest and $q
+							var deferred = $q.defer();
+							var promise = deferred.promise;
+							var request = new XMLHttpRequest();
+							request.onload = processResponse;
+							request.open('GET','/api/authenticate');
+							request.setRequestHeader('Accept', 'application/json');
+							request.setRequestHeader('Authorization', getAuth());
+							request.send(null);
+
+							/**
+							* Process the response, and if there are any issues
+							* the reject the promise
+							*/
+							function processResponse() {
+								if (this.status !== 200) {
+									deferred.reject();
+								} else {
+									deferred.resolve();
+								}
+							}
+
+							/**
+							* Allow subscribers to the promise to add a
+							* success function to the login event
+							*/
+							promise.success = function(fn) {
+								promise.then(function() {
+									fn();
+								});
+								return promise;
+							};
+
+							/**
+							* Allow subscribers to the promise to add
+							* an error function to the login event
+							*/
+							promise.error = function(fn) {
+								promise.then(null, function() {
+									fn();
+								});
+								return promise;
+							};
+
+							/**
+							* Handle the promise being rejected or resolved
+							*/
+							promise.then(function () {
+								// we've confirmed credentials match a user
+								$log.debug('Successfully authenticated');
+								$rootScope.$emit('login', username);
+							}, function (){
+								// some error in credential check
+								$log.debug('Test authentication failed');
+								logout();
+								$rootScope.$emit('authentication-failed', username);
+							});
+
+							return promise;
+						}
+					};
+				}
+			]
+		);
+	})();
+
+	// add the interceptor to the http service
+	huwa.config(['$httpProvider', function($httpProvider) {
+		$httpProvider.interceptors.push('authInterceptor');
+	}]);
+
+})();

@@ -1,0 +1,24 @@
+{
+  "name": "angular-basicauth",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Simple basic authentication service for AngularJs",
+  "main": "angular-basicauth.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iandotkelly/angular-basicauth.git"
+  },
+  "author": "Ian Kelly",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/iandotkelly/angular-basicauth/issues"
+  },
+  "homepage": "https://github.com/iandotkelly/angular-basicauth",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "uglify-js": "^2.4.14"
+  }
+}
