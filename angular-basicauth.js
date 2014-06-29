@@ -5,6 +5,8 @@
  * License: MIT
  */
 
+'use strict';
+
 (function() {
 
 	var angularBasicAuth = angular.module(
@@ -30,7 +32,7 @@
 	* HTTP Interceptor to add Authorization headers to all requests if the
 	* auth local storage property has been set
 	*/
-	huwa.factory('authInterceptor',
+	angularBasicAuth.factory('authInterceptor',
 		[
 			'$q',
 			'authService',
@@ -45,7 +47,7 @@
 					* is one found in the local storage
 					*/
 					request: function(config) {
-						config.headers['Authorization'] = authService.getAuth();
+						config.headers.Authorization = authService.getAuth();
 						return config;
 					},
 
@@ -75,7 +77,7 @@
 	* This is a singleton service, so we will instantiate this once in an iife
 	*/
 	(function() {
-		huwa.factory('authService',
+		angularBasicAuth.factory('authService',
 			[
 				'$log',
 				'localStorageService',
@@ -211,6 +213,19 @@
 							// record the credentials
 							setCredentials(username, password);
 
+							/**
+							* Process the response, and if there are any issues
+							* the reject the promise
+							*/
+							function processResponse() {
+								/* jshint validthis: true */
+								if (this.status !== 200) {
+									deferred.reject();
+								} else {
+									deferred.resolve();
+								}
+							}
+
 							// don't use $http to avoid circular reference, so
 							// directly use XMLHttpRequest and $q
 							var deferred = $q.defer();
@@ -221,18 +236,6 @@
 							request.setRequestHeader('Accept', 'application/json');
 							request.setRequestHeader('Authorization', getAuth());
 							request.send(null);
-
-							/**
-							* Process the response, and if there are any issues
-							* the reject the promise
-							*/
-							function processResponse() {
-								if (this.status !== 200) {
-									deferred.reject();
-								} else {
-									deferred.resolve();
-								}
-							}
 
 							/**
 							* Allow subscribers to the promise to add a
@@ -279,7 +282,7 @@
 	})();
 
 	// add the interceptor to the http service
-	huwa.config(['$httpProvider', function($httpProvider) {
+	angularBasicAuth.config(['$httpProvider', function($httpProvider) {
 		$httpProvider.interceptors.push('authInterceptor');
 	}]);
 
