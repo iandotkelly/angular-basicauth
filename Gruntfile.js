@@ -30,13 +30,17 @@ module.exports = function (grunt) {
 					'angular-basicauth.min.js': 'angular-basicauth.js'
 				}
 			}
+		},
+
+		karma: {
+			unit: {
+				configFile: 'test/karma.conf.js'
+			},
 		}
 
 	});
 
-	grunt.registerTask('test', ['jshint']);
+	grunt.registerTask('test', ['jshint', 'karma']);
 	grunt.registerTask('lint', ['jshint']);
-	grunt.registerTask('minify', ['uglify']);
-
-	grunt.registerTask('default', ['jshint', 'uglify']);
+	grunt.registerTask('dist', ['jshint', 'uglify']);
 };

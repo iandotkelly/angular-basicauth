@@ -61,7 +61,10 @@
 					* is one found in the local storage
 					*/
 					request: function(config) {
-						config.headers.Authorization = authService.getAuth();
+						var auth = authService.getAuth();
+						if (auth) {
+							config.headers.Authorization = auth;
+						}
 						return config;
 					},
 
