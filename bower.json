@@ -1,7 +1,7 @@
 {
   "name": "angular-basicauth",
   "main": "angular-basicauth.js",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "authors": [
     "Ian Kelly <iandotkelly@gmail.com>"
   ],
