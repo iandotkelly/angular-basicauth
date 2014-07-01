@@ -231,6 +231,8 @@
 							// record the credentials
 							setCredentials(username, password);
 
+							var deferred = $q.defer();
+
 							/**
 							* Process the response, and if there are any issues
 							* the reject the promise
@@ -246,7 +248,6 @@
 
 							// don't use $http to avoid circular reference, so
 							// directly use XMLHttpRequest and $q
-							var deferred = $q.defer();
 							var promise = deferred.promise;
 							var request = new XMLHttpRequest();
 							request.onload = processResponse;
@@ -284,7 +285,7 @@
 								// we've confirmed credentials match a user
 								$log.debug('Successfully authenticated');
 								$rootScope.$emit('login', username);
-							}, function (){
+							}, function () {
 								// some error in credential check
 								$log.debug('Test authentication failed');
 								logout();

@@ -114,9 +114,11 @@
         "angular",
         "describe",
         "beforeEach",
+        "afterEach",
         "it",
         "inject",
-        "expect"
+        "expect",
+        "sinon"
     ],
     "indent"        : 4         // Specify indentation spacing
 }

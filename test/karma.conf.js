@@ -19,6 +19,7 @@ module.exports = function(config) {
         'bower_components/angular-mocks/angular-mocks.js',
         'bower_components/angular-local-storage/angular-local-storage.js',
         'bower_components/angular-base64/angular-base64.js',
+        'bower_components/sinonjs/sinon.js',
         'angular-basicauth.js',
         'test/**/*.js',
     ],
@@ -56,7 +57,7 @@ module.exports = function(config) {
 
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: true,
+    autoWatch: false,
 
 
     // start these browsers
@@ -66,6 +67,6 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false
+    singleRun: true
   });
 };
