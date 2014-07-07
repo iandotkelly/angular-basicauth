@@ -1,5 +1,7 @@
 #angular-basicauth
 
+[![Dependency Status](https://gemnasium.com/iandotkelly/angular-basicauth.svg)](https://gemnasium.com/iandotkelly/angular-basicauth)
+
 ## Purpose
 Simple AngularJs service for managing login and logout, and protection
 of server API endpoints using basic authentication. It provides
