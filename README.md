@@ -1,5 +1,7 @@
 #angular-basicauth
 
+[![Build Status](https://travis-ci.org/iandotkelly/angular-basicauth.svg?branch=master)](https://travis-ci.org/iandotkelly/angular-basicauth)
+
 [![Dependency Status](https://gemnasium.com/iandotkelly/angular-basicauth.svg)](https://gemnasium.com/iandotkelly/angular-basicauth)
 
 ## Purpose
