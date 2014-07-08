@@ -33,14 +33,18 @@ module.exports = function (grunt) {
 		},
 
 		karma: {
-			unit: {
+			chrome: {
 				configFile: 'test/karma.conf.js'
 			},
+			travis: {
+				configFile: 'test/karma-phantom.conf.js'
+			}
 		}
 
 	});
 
-	grunt.registerTask('test', ['jshint', 'karma']);
+	grunt.registerTask('test', ['jshint', 'karma:chrome']);
 	grunt.registerTask('lint', ['jshint']);
 	grunt.registerTask('dist', ['jshint', 'uglify']);
+	grunt.registerTask('travis', ['jshint', 'karma:travis']);
 };

@@ -5,7 +5,7 @@
   "description": "Simple basic authentication service for AngularJs",
   "main": "angular-basicauth.js",
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt travis"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,7 @@
     "karma": "^0.12.16",
     "karma-chrome-launcher": "^0.1.4",
     "karma-jasmine": "^0.2.2",
+    "karma-phantomjs-launcher": "^0.1.4",
     "karma-spec-reporter": "0.0.13",
     "load-grunt-tasks": "^0.6.0",
     "uglify-js": "^2.4.14"
