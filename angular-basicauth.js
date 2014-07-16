@@ -284,12 +284,12 @@
 							promise.then(function () {
 								// we've confirmed credentials match a user
 								$log.debug('Successfully authenticated');
-								$rootScope.$emit('login', username);
+								$rootScope.$broadcast('login', username);
 							}, function () {
 								// some error in credential check
 								$log.debug('Test authentication failed');
 								logout();
-								$rootScope.$emit('authentication-failed', username);
+								$rootScope.$broadcast('authentication-failed', username);
 							});
 
 							return promise;
