@@ -1,5 +1,9 @@
 
-### 0.2.0 - July 20, 2013
+### 0.2.1 - July 20, 2014
+
+- Rebuilt minified version, otherwise identical to 0.2.0
+
+### 0.2.0 - July 20, 2014
 
 - Add list of protected endpoints, to prevent authorization header
 being added to unnecessary requests, potentially leaking
