@@ -55,6 +55,7 @@ describe('basic auth service', function () {
 
 			beforeEach(inject(function ($injector) {
 				authService = $injector.get('authService');
+				authService.addEndpoint();
 			}));
 
 			it('should be an onbject', function () {
@@ -62,6 +63,8 @@ describe('basic auth service', function () {
 			});
 
 			it('shoud have a defined api', function () {
+				expect(typeof authService.addEndpoint).toBe('function');
+				expect(typeof authService.isEndpoint).toBe('function');
 				expect(typeof authService.login).toBe('function');
 				expect(typeof authService.logout).toBe('function');
 				expect(typeof authService.username).toBe('function');
@@ -85,6 +88,7 @@ describe('basic auth service', function () {
 				$httpBackend.resetExpectations();
 				$http = $injector.get('$http');
 				authService = $injector.get('authService');
+				authService.addEndpoint();
 			}));
 
 			afterEach(function() {
@@ -123,6 +127,7 @@ describe('basic auth service', function () {
 
 			beforeEach(inject(function ($injector) {
 				authService = $injector.get('authService');
+				authService.addEndpoint();
 				$rootScope = $injector.get('$rootScope');
 
 				// cannot use $httpBackend as the service bypasses $http
@@ -202,6 +207,7 @@ describe('basic auth service', function () {
 
 			beforeEach(inject(function ($injector) {
 				authService = $injector.get('authService');
+				authService.addEndpoint();
 				authDefaults = $injector.get('authDefaults');
 
 				// cannot use $httpBackend as the service bypasses $http
@@ -241,6 +247,7 @@ describe('basic auth service', function () {
 
 			beforeEach(inject(function ($injector) {
 				authService = $injector.get('authService');
+				authService.addEndpoint();
 				$rootScope = $injector.get('$rootScope');
 
 				// cannot use $httpBackend as the service bypasses $http
@@ -322,6 +329,7 @@ describe('basic auth service', function () {
 				$httpBackend.resetExpectations();
 				$http = $injector.get('$http');
 				authService = $injector.get('authService');
+				authService.addEndpoint();
 			}));
 
 			afterEach(function() {
@@ -348,6 +356,31 @@ describe('basic auth service', function () {
 				$http.get('/fred');
 				$httpBackend.flush();
 			});
+
+			it('an http request to a different hostname should not have an Authorization header', function() {
+
+				$httpBackend.expectGET('http://fred.com/fred').respond(function(method, url, data, headers) {
+					expect(headers.Authorization).toBe(undefined);
+					return [200, ''];
+				});
+
+				$http.get('http://fred.com/fred');
+				$httpBackend.flush();
+			});
+
+			it('until a new endpoint is added when it should have an Authorization header', function() {
+
+				authService.addEndpoint('http://fred.com/');
+
+				$httpBackend.expectGET('http://fred.com/fred').respond(function(method, url, data, headers) {
+					expect(headers.Authorization).toBe('Basic aWFuQG1lOmZyZWQ=');
+					return [200, ''];
+				});
+
+				$http.get('http://fred.com/fred');
+				$httpBackend.flush();
+			});
+
 		});
 
 		describe('calling #logout()', function() {
@@ -366,6 +399,7 @@ describe('basic auth service', function () {
 				$http = $injector.get('$http');
 				$rootScope = $injector.get('$rootScope');
 				authService = $injector.get('authService');
+				authService.addEndpoint();
 
 				// cannot use $httpBackend as the service bypasses $http
 				// for the authenticate calls to avoid a circular reference
@@ -453,6 +487,7 @@ describe('basic auth service', function () {
 				$http = $injector.get('$http');
 				$rootScope = $injector.get('$rootScope');
 				authService = $injector.get('authService');
+				authService.addEndpoint();
 
 				// cannot use $httpBackend as the service bypasses $http
 				// for the authenticate calls to avoid a circular reference

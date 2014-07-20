@@ -52,6 +52,8 @@
 			'authService',
 			function ($q, authService) {
 
+				var isEndpoint = authService.isEndpoint;
+
 				var authInterceptor = {
 
 					/**
@@ -61,9 +63,11 @@
 					* is one found in the local storage
 					*/
 					request: function(config) {
-						var auth = authService.getAuth();
-						if (auth) {
-							config.headers.Authorization = auth;
+						if (isEndpoint(config.url)) {
+							var auth = authService.getAuth();
+							if (auth) {
+								config.headers.Authorization = auth;
+							}
 						}
 						return config;
 					},
@@ -110,6 +114,24 @@
 					var LS_USERNAME = 'username';
 					var LS_AUTHENTICATION = 'auth';
 					var LS_LASTACTIVITY = 'last-activity';
+
+					// array to store protected endpoints
+					var endpoints = [];
+					// use an anchor element to parse urls
+					var urlParser = document.createElement('a');
+
+					/**
+					 * Whether a hostname is in the endpoint collection
+					 * @param {String} hostname  The hostname of a URL, e.g. www.google.com
+					 */
+					function inEndpoints(hostname) {
+						for (var index = 0, len = endpoints.length; index < len; index++) {
+							if (hostname === endpoints[index]) {
+								return true;
+							}
+						}
+						return false;
+					}
 
 					/**
 					* Logout and wipe the local storage
@@ -199,6 +221,32 @@
 						* Record activity
 						*/
 						activity: recordActivity,
+
+						/**
+						 * Add an endpoint
+						 *
+						 * @param {String} endpoint  The URL of an endpoint, or undefined if current location
+						 */
+						addEndpoint: function(endpoint) {
+							endpoint = endpoint || window.location;
+							urlParser.href = endpoint;
+							var hostname = urlParser.hostname;
+							if (inEndpoints(hostname)) {
+								return;
+							}
+							endpoints.push(hostname);
+						},
+
+						/**
+						 * Is an URL a defined endpoint requiring authentication
+						 *
+						 * @param {String} url The URL of a potential endpoint
+						 */
+						isEndpoint: function(url) {
+							urlParser.href = url;
+							var hostname = urlParser.hostname;
+							return inEndpoints(hostname);
+						},
 
 						/**
 						* The current username
