@@ -1,7 +1,7 @@
 {
   "name": "angular-basicauth",
   "main": "angular-basicauth.js",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "authors": [
     "Ian Kelly <iandotkelly@gmail.com>"
   ],
@@ -10,7 +10,6 @@
     "globals"
   ],
   "license": "Copyright (C) Ian Kelly 2014",
-  "private": true,
   "ignore": [
     "**/.*",
     "node_modules",

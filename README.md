@@ -22,11 +22,17 @@ cookies as a fallback
 - Automatically logs user out on failed authentication
 - Automatic logout after 3 hours (configurable)
 
+Basic authentication sends usernames and passwords unencrypted in each request, so
+should only be used over a HTTPS protected request.
+
 **Please note this module stores unencypted username & password in local-storage or cookies, so is
 susceptible to attack from code from the same domain**
 
-Also note that basic authentication sends usernames and passwords unencrypted in each request, so
-should not be used when not using HTTPS protected transport.
+**As with all security and authentication related software, I strongly encourage the user of this
+software to thoroughly review it and understand how it work and assure themselves that it is
+suitable before using it in their own project**
+
+
 
 ## Installation
 
