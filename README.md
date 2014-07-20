@@ -89,6 +89,10 @@ var controller = app.controller('MyController',
 		'$scope',
 		function(authService, $rootScope, $scope) {
 
+			// define the endpoints that will be authenticated
+			authService.addEndpoint(); // the current hostname
+			authService.addEndpoint('https://some.other.hostname.com');
+
 			// listen for login events
 			$rootScope.$on('login', function() {
 				$scope.loggedInUsername = authService.username();
@@ -124,18 +128,23 @@ var controller = app.controller('MyController',
 
 ### HTTP Intercept
 
-When logged in, all requests generated with the $http service
+When logged in, requests generated with the $http service
 have the 'Authorization' header appended to them so that
-every request is authenticated.
+every request is authenticated.  
 
 Please note that this means you MUST TRUST the endpoint of
 these requests.
 
-## To Do
+Only hostnames that have been added with a call to addEndpoint()
+will have an authentication header, e.g.:
 
-- List of protected endpoints, to stop auth header going to
-unprotected URLs
+```javascript
+// authenticate all requests to the current hostname
+authService.addEndpoint();
 
+// authenticate another hostname
+authService.addEndpoint('https://some.other.domain.com');
+```
 ## License
 
 The MIT License (MIT)
