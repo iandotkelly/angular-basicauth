@@ -18,12 +18,16 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "1.2.20",
+    "angular": "1.2.21",
     "angular-local-storage": "~0.0.5",
-    "angular-base64": "~2.0.2"
+    "angular-base64": "~2.0.2",
+    "angular-mocks": "1.2.21"
   },
   "devDependencies": {
     "angular-mocks": "~1.2.20",
     "sinonjs": "~1.10.2"
+  },
+  "resolutions": {
+    "angular": "1.2.21"
   }
 }
