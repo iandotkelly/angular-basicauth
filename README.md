@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/iandotkelly/angular-basicauth.svg?branch=master)](https://travis-ci.org/iandotkelly/angular-basicauth)
 
+[![Coverage Status](https://img.shields.io/coveralls/iandotkelly/angular-basicauth.svg)](https://coveralls.io/r/iandotkelly/angular-basicauth?branch=master)
+
 [![Dependency Status](https://gemnasium.com/iandotkelly/angular-basicauth.svg)](https://gemnasium.com/iandotkelly/angular-basicauth)
 
 ## Purpose
