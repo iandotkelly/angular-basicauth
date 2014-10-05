@@ -39,7 +39,7 @@ suitable before using it in their own project**
 ## Installation
 
 You can clone this repository and include angular-basicauth.js or
-angular-basicauth.min.js as a script in your application.
+angular-basicauth.min.js as a script in your application, plus its dependencies.
 
 Alternatively you can use [bower.js](http://bower.io/) to install, which will install the
 module and all its dependencies.
@@ -164,6 +164,16 @@ authService.addEndpoint();
 // authenticate another hostname
 authService.addEndpoint('https://some.other.domain.com');
 ```
+
+### Custom Headers
+
+You can add custom headers to all requests through adding them
+to the headers object, for example:
+
+```javascript
+authService.headers['custom-header'] = 'custom-value';
+```
+
 ## License
 
 The MIT License (MIT)
