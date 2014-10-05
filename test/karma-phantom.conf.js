@@ -17,7 +17,7 @@ module.exports = function(config) {
     files: [
         'bower_components/angular/angular.js',
         'bower_components/angular-mocks/angular-mocks.js',
-        'bower_components/angular-local-storage/angular-local-storage.js',
+        'bower_components/angular-local-storage/dist/angular-local-storage.js',
         'bower_components/angular-base64/angular-base64.js',
         'bower_components/sinonjs/sinon.js',
         'angular-basicauth.js',
