@@ -65,8 +65,14 @@
 					request: function(config) {
 						if (isEndpoint(config.url)) {
 							var auth = authService.getAuth();
+							var headers = authService.headers;
 							if (auth) {
 								config.headers.Authorization = auth;
+								for (var key in headers) {
+									if (headers.hasOwnProperty(key)) {
+										config.headers[key] = headers[key];
+									}
+								}
 							}
 						}
 						return config;
@@ -238,6 +244,12 @@
 						},
 
 						/**
+						 * Additional headers to add to authenticated
+						 * requests.
+						 */
+						headers: {},
+
+						/**
 						 * Is an URL a defined endpoint requiring authentication
 						 *
 						 * @param {String} url The URL of a potential endpoint
@@ -273,7 +285,7 @@
 						* @param  {String} password The password
 						* @return {Object}          Promise for the transaction
 						*/
-						login: function(username, password) {
+						login: function(username, password, headers) {
 							$log.debug('login event');
 
 							// record the credentials
@@ -302,6 +314,11 @@
 							request.open('GET', authDefaults.authenticateUrl);
 							request.setRequestHeader('Accept', 'application/json');
 							request.setRequestHeader('Authorization', getAuth());
+							for (var key in this.headers) {
+							  if (this.headers.hasOwnProperty(key)) {
+									request.setRequestHeader(key, this.headers[key]);
+							  }
+							}
 							request.send(null);
 
 							/**

@@ -316,6 +316,44 @@ describe('basic auth service', function () {
 			});
 		});
 
+		describe('adding headers to the authService', function() {
+
+			var authService;
+			var server;
+			var $rootScope;
+
+			beforeEach(module('angularBasicAuth'));
+
+			beforeEach(inject(function ($injector) {
+				authService = $injector.get('authService');
+				authService.addEndpoint();
+				authService.headers['test-header'] = 'this is a test';
+				$rootScope = $injector.get('$rootScope');
+
+				// cannot use $httpBackend as the service bypasses $http
+				// for the authenticate calls to avoid a circular reference
+				// so use the sinon fake server API
+				server = sinon.fakeServer.create();
+			}));
+
+			afterEach(function() {
+				server.restore();
+			});
+
+			it('should invoke a request to /api/authenticate with a custom header', function(done) {
+
+				server.respondWith(function(request) {
+					expect(request.requestHeaders.Authorization).toBe('Basic aWFuQG1lOmZyZWQ=');
+					expect(request.requestHeaders['test-header']).toBe('this is a test');
+					request.respond(200, {}, '');
+					done();
+				});
+
+				authService.login('ian@me', 'fred');
+				server.respond();
+			});
+		});
+
 		describe('after valid credentials', function() {
 
 			var authService;
@@ -330,6 +368,7 @@ describe('basic auth service', function () {
 				$http = $injector.get('$http');
 				authService = $injector.get('authService');
 				authService.addEndpoint();
+				authService.headers['custom-header'] = 'custom value';
 			}));
 
 			afterEach(function() {
@@ -350,6 +389,17 @@ describe('basic auth service', function () {
 
 				$httpBackend.expectGET('/fred').respond(function(method, url, data, headers) {
 					expect(headers.Authorization).toBe('Basic aWFuQG1lOmZyZWQ=');
+					return [200, ''];
+				});
+
+				$http.get('/fred');
+				$httpBackend.flush();
+			});
+
+			it('custom headers should also be included in the request', function() {
+
+				$httpBackend.expectGET('/fred').respond(function(method, url, data, headers) {
+					expect(headers['custom-header']).toBe('custom value');
 					return [200, ''];
 				});
 
@@ -396,6 +446,8 @@ describe('basic auth service', function () {
 			});
 
 		});
+
+
 
 		describe('calling #logout()', function() {
 
