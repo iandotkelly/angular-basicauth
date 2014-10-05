@@ -45,11 +45,22 @@ Alternatively you can use [bower.js](http://bower.io/) to install, which will in
 module and all its dependencies.
 
 ```sh
-bower install iandotkelly/angular-basicauth
+bower install angular-basicauth
 ```
 ## Use
 
-### Add Dependency
+### Include scripts
+
+You should include the following scripts that comprise the module
+and its bower installed dependencies.
+
+ * angular-basicauth.js
+ * bower_components/angular-base64/angular-base64.js
+ * bower_components/angular-local-storage/dist/angular-local-storage.js
+
+... or the minified equivalents.
+
+### Add dependency in your Angular.Js app
 
 Include the script in your angular.js web application:
 
