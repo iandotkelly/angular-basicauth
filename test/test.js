@@ -381,6 +381,20 @@ describe('basic auth service', function () {
 				$httpBackend.flush();
 			});
 
+			it('adding an endpoint more than once does not cause a problem', function() {
+
+				authService.addEndpoint('http://fred.com/');
+				authService.addEndpoint('http://fred.com/');
+
+				$httpBackend.expectGET('http://fred.com/fred').respond(function(method, url, data, headers) {
+					expect(headers.Authorization).toBe('Basic aWFuQG1lOmZyZWQ=');
+					return [200, ''];
+				});
+
+				$http.get('http://fred.com/fred');
+				$httpBackend.flush();
+			});
+
 		});
 
 		describe('calling #logout()', function() {
