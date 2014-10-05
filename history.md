@@ -1,4 +1,9 @@
 
+### 0.3.0 - October 5, 2014
+
+- Added capability to include custom headers in requests
+- Updated dependencies
+
 ### 0.2.1 - July 20, 2014
 
 - Rebuilt minified version, otherwise identical to 0.2.0
