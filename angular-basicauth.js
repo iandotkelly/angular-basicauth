@@ -310,7 +310,11 @@
 							// directly use XMLHttpRequest and $q
 							var promise = deferred.promise;
 							var request = new XMLHttpRequest();
+							request.timeout = 15000;
 							request.onload = processResponse;
+							request.onerror = request.ontimeout = function () {
+								deferred.reject();
+							};
 							request.open('GET', authDefaults.authenticateUrl);
 							request.setRequestHeader('Accept', 'application/json');
 							request.setRequestHeader('Authorization', getAuth());
