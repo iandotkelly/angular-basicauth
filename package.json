@@ -1,7 +1,7 @@
 {
-  "name": "angular-basicauth",
+  "name": "@acoint/angular-basicauth",
   "version": "0.3.0",
-  "private": true,
+  "private": false,
   "description": "Simple basic authentication service for AngularJs",
   "main": "angular-basicauth.js",
   "scripts": {
