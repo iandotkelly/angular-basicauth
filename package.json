@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/iandotkelly/angular-basicauth",
   "dependencies": {
-    "angular": "~1.4.1",
+    "angular": "~1.7.9",
     "angular-local-storage": "~0.7.1",
     "angular-base64": "~2.0.5"
   },
