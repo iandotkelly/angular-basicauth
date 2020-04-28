@@ -1,7 +1,7 @@
 {
-  "name": "angular-basicauth",
+  "name": "@acoint/angular-basicauth",
   "version": "0.3.0",
-  "private": true,
+  "private": false,
   "description": "Simple basic authentication service for AngularJs",
   "main": "angular-basicauth.js",
   "scripts": {
@@ -18,19 +18,19 @@
   },
   "homepage": "https://github.com/iandotkelly/angular-basicauth",
   "dependencies": {
-    "angular": "~1.4.1",
-    "angular-local-storage": "~0.2.1",
+    "angular": "~1.7.9",
+    "angular-local-storage": "~0.7.1",
     "angular-base64": "~2.0.5"
   },
   "devDependencies": {
     "grunt": "~0.4.5",
     "grunt-contrib-jshint": "~2.0.0",
-    "grunt-contrib-uglify": "^0.9.1",
+    "grunt-contrib-uglify": "^4.0.1",
     "grunt-karma": "^0.11.0",
     "jasmine-core": "^2.3.4",
     "jshint": "^2.8.0",
     "karma": "^0.12.36",
-    "karma-chrome-launcher": "^0.1.12",
+    "karma-chrome-launcher": "^3.1.0",
     "karma-coverage": "^0.4.2",
     "karma-coveralls": "~1.1.0",
     "karma-jasmine": "^0.3.5",
@@ -38,6 +38,6 @@
     "phantomjs": "^1.9",
     "karma-spec-reporter": "0.0.19",
     "load-grunt-tasks": "^3.2.0",
-    "uglify-js": "~2.4.23"
+    "uglify-js": "~3.9.1"
   }
 }
