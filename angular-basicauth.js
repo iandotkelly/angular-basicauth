@@ -151,6 +151,13 @@
 					}
 
 					/**
+					* Record account activity
+					*/
+					function recordActivity() {
+						localStorage.set(LS_LASTACTIVITY, (new Date()).toString());
+					}
+
+					/**
 					* Set the user credentials
 					*
 					* @param {String} username Username
@@ -166,13 +173,6 @@
 							'Basic ' + $base64.encode(username + ':' + password));
 
 						recordActivity();
-					}
-
-					/**
-					* Record account activity
-					*/
-					function recordActivity() {
-						localStorage.set(LS_LASTACTIVITY, (new Date()).toString());
 					}
 
 					/**

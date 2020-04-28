@@ -5,6 +5,7 @@
   "description": "Simple basic authentication service for AngularJs",
   "main": "angular-basicauth.js",
   "scripts": {
+    "build": "grunt",
     "test": "grunt travis"
   },
   "repository": {
@@ -19,25 +20,27 @@
   "homepage": "https://github.com/iandotkelly/angular-basicauth",
   "dependencies": {
     "angular": "~1.7.9",
-    "angular-local-storage": "~0.7.1",
-    "angular-base64": "~2.0.5"
+    "angular-base64": "~2.0.5",
+    "angular-local-storage": "~0.7.1"
   },
   "devDependencies": {
-    "grunt": "~0.4.5",
+    "angular-mocks": "~1.7.9",
+    "sinon": "9.0.2",
+    "grunt": "~1.1.0",
     "grunt-contrib-jshint": "~2.0.0",
     "grunt-contrib-uglify": "^4.0.1",
-    "grunt-karma": "^0.11.0",
-    "jasmine-core": "^2.3.4",
-    "jshint": "^2.8.0",
-    "karma": "^0.12.36",
+    "grunt-karma": "^4.0.0",
+    "jasmine-core": "^3.5.0",
+    "jshint": "^2.11.0",
+    "karma": "^5.0.2",
     "karma-chrome-launcher": "^3.1.0",
-    "karma-coverage": "^0.4.2",
-    "karma-coveralls": "~1.1.0",
-    "karma-jasmine": "^0.3.5",
+    "karma-coverage": "^2.0.2",
+    "karma-coveralls": "~2.1.0",
+    "karma-jasmine": "^3.1.1",
     "karma-phantomjs-launcher": "~0.2.0",
-    "phantomjs": "^1.9",
-    "karma-spec-reporter": "0.0.19",
-    "load-grunt-tasks": "^3.2.0",
+    "phantomjs": "2.1.7",
+    "karma-spec-reporter": "0.0.32",
+    "load-grunt-tasks": "^5.1.0",
     "uglify-js": "~3.9.1"
   }
 }
