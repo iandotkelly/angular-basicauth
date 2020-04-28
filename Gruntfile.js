@@ -32,14 +32,14 @@ module.exports = function (grunt) {
 			}
 		},
 
-		karma: {
-			chrome: {
-				configFile: 'test/karma.conf.js'
-			},
-			travis: {
-				configFile: 'test/karma-phantom.conf.js'
-			}
-		}
+		// karma: {
+		// 	chrome: {
+		// 		configFile: 'test/karma.conf.js'
+		// 	},
+		// 	travis: {
+		// 		configFile: 'test/karma-phantom.conf.js'
+		// 	}
+		// }
 
 	});
 
