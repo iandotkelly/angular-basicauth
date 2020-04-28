@@ -1,6 +1,6 @@
 {
-  "name": "@acoint/angular-basicauth",
-  "version": "0.3.0",
+  "name": "@acomodeo/angular-basicauth",
+  "version": "1.0.0",
   "private": false,
   "description": "Simple basic authentication service for AngularJs",
   "main": "angular-basicauth.js",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/iandotkelly/angular-basicauth.git"
+    "url": "https://github.com/Acomodeo/angular-basicauth.git"
   },
   "author": "Ian Kelly",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/iandotkelly/angular-basicauth/issues"
+    "url": "https://github.com/Acomodeo/angular-basicauth/issues"
   },
-  "homepage": "https://github.com/iandotkelly/angular-basicauth",
+  "homepage": "https://github.com/Acomodeo/angular-basicauth",
   "dependencies": {
     "angular": "~1.7.9",
     "angular-base64": "~2.0.5",
