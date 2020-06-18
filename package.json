@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/Acomodeo/angular-basicauth",
   "dependencies": {
-    "angular": "~1.7.9",
+    "angular": "~1.8.0",
     "angular-base64": "~2.0.5",
     "angular-local-storage": "~0.7.1"
   },
